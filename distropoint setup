@@ -1,0 +1,50 @@
+prod-lex-fs1
+	-distropoint (Read Only File Share, except for Domain Admins)
+		-applicationX
+			-install.bat
+			-applicationX.exe
+			-applicationX.msi
+			-applicationX.ini
+		-applicationY
+			-install.exe
+			-applicationX.exe
+			-applicationX.msi
+			-applicationX.ini
+ams-mar-fs1	
+	-distropoint (Read Only File Share, except for Domain Admins)
+		-applicationX
+			-install.bat
+			-applicationX.exe
+			-applicationX.msi
+			-applicationX.ini
+		-applicationY
+			-install.exe
+			-applicationX.exe
+			-applicationX.msi
+			-applicationX.ini
+			
+			
+install.bat Example
+
+@echo off
+:: CHECK TO MAKE SURE PROGRAM IS NOT INSTALLED ::
+if exist "%PROGRAMFILES%\Webroot\Client\spysweeper.exe" goto check
+if not exist "%PROGRAMFILES%\Webroot\Client\spysweeper.exe" goto install
+:check
+if exist "%PROGRAMFILES%\Webroot\Client\SpySweeperUI.exe" goto loaded
+if not exist "%PROGRAMFILES%\Webroot\Client\SpySweeperUI.exe" goto install
+
+:: CHECK FOR VERSION UPDATE ::
+
+
+:: INSTALL PROGRAM ::
+:install
+if exist "%HOMEDRIVE%\tempinstall" RD /Q /S %HOMEDRIVE%\tempinstall\
+mkdir C:\tempinstall 
+xcopy "\\ams-mar-fs1\webrootdistropoint\webroot\WebrootClientSetup.*" %HOMEDRIVE%\tempinstall
+msiexec /i %HOMEDRIVE%\tempinstall\WebrootClientSetup.msi /quiet
+RD /Q /S %HOMEDRIVE%\tempinstall\
+goto end
+:loaded
+echo Webroot Enterprise Clients are already Installed
+:end
